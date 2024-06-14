@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@babel/plugin-transform-private-methods": "^7.24.7",
+    "@knowlearning/agents": "^0.9.151",
     "core-js": "^3.8.3",
     "dompurify": "^3.1.5",
     "jsdom": "^24.1.0",

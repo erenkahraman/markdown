@@ -8,6 +8,9 @@ dependencies:
   '@babel/plugin-transform-private-methods':
     specifier: ^7.24.7
     version: 7.24.7(@babel/core@7.24.7)
+  '@knowlearning/agents':
+    specifier: ^0.9.151
+    version: 0.9.151
   core-js:
     specifier: ^3.8.3
     version: 3.37.1
@@ -1443,6 +1446,22 @@ packages:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.4.15
 
+  /@knowlearning/agents@0.9.151:
+    resolution: {integrity: sha512-yX8kMmsDbw4+gaPAP5LNpjd8sePMaqcMeFRkXpDzNgvd5xXKkhY344RIOl0D4WM59gPa0Rca6ZQtpLwIblQr/g==}
+    dependencies:
+      '@knowlearning/patch-proxy': 1.3.2
+      fast-json-patch: 3.1.1
+      uuid: 8.3.2
+      vue: 3.4.27
+      vuex: 4.1.0(vue@3.4.27)
+    transitivePeerDependencies:
+      - typescript
+    dev: false
+
+  /@knowlearning/patch-proxy@1.3.2:
+    resolution: {integrity: sha512-m1f+dDCMw2dnKoLXgh4ViaAuGyAmgfevy+vDo4zDLuSv5W/bGdDwyB9epp+8nlqUVG9yCyvC+XU9s+5PmsB9vQ==}
+    dev: false
+
   /@leichtgewicht/ip-codec@2.0.5:
     resolution: {integrity: sha512-Vo+PSpZG2/fmgmiNzYK9qWRh8h/CHrwD0mo1h1DzL4yzHNSfWYujGTYsWGreD000gcgmZ7K4Ys6Tx9TxtsKdDw==}
     dev: true
@@ -2201,6 +2220,10 @@ packages:
       - walrus
       - whiskers
     dev: true
+
+  /@vue/devtools-api@6.6.3:
+    resolution: {integrity: sha512-0MiMsFma/HqA6g3KLKn+AGpL1kgKhFWszC9U29NfpWK5LE7bjeXxySWJrOJ77hBz+TBrBQ7o4QJqbPbqbs8rJw==}
+    dev: false
 
   /@vue/reactivity@3.4.27:
     resolution: {integrity: sha512-kK0g4NknW6JX2yySLpsm2jlunZJl2/RJGZ0H9ddHdfBVHcNzxmQ0sS0b09ipmBoQpY8JM2KmUw+a6sO8Zo+zIA==}
@@ -4004,6 +4027,10 @@ packages:
       merge2: 1.4.1
       micromatch: 4.0.7
     dev: true
+
+  /fast-json-patch@3.1.1:
+    resolution: {integrity: sha512-vf6IHUX2SBcA+5/+4883dsIjpBTqmfBjmYiWK1savxQmFk4JfBMLa7ynTYOs1Rolp/T1betJxHiGD3g1Mn8lUQ==}
+    dev: false
 
   /fast-json-stable-stringify@2.1.0:
     resolution: {integrity: sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==}
@@ -6835,7 +6862,6 @@ packages:
   /uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
     hasBin: true
-    dev: true
 
   /v8-compile-cache@2.4.0:
     resolution: {integrity: sha512-ocyWc3bAHBB/guyqJQVI5o4BZkPhznPYUG2ea80Gond/BgNWpap8TOmLSeeQG7bnh2KMISxskdADG59j7zruhw==}
@@ -7000,6 +7026,15 @@ packages:
       '@vue/runtime-dom': 3.4.27
       '@vue/server-renderer': 3.4.27(vue@3.4.27)
       '@vue/shared': 3.4.27
+
+  /vuex@4.1.0(vue@3.4.27):
+    resolution: {integrity: sha512-hmV6UerDrPcgbSy9ORAtNXDr9M4wlNP4pEFKye4ujJF8oqgFFuxDCdOLS3eNoRTtq5O3hoBDh9Doj1bQMYHRbQ==}
+    peerDependencies:
+      vue: ^3.2.0
+    dependencies:
+      '@vue/devtools-api': 6.6.3
+      vue: 3.4.27
+    dev: false
 
   /w3c-xmlserializer@5.0.0:
     resolution: {integrity: sha512-o8qghlI8NZHU1lLPrpi2+Uq7abh4GGPpYANlalzWxyWteJOCsr/P+oPBA49TOLu5FTZO4d3F9MnWJfiMo4BkmA==}
