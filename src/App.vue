@@ -21,11 +21,6 @@
             <div class="symbol" draggable="true" @dragstart="dragStart">θ (Theta)</div>
             <div class="symbol" draggable="true" @dragstart="dragStart">Δ (Delta)</div>
             <div class="symbol" draggable="true" @dragstart="dragStart">α (Alpha)</div>
-            <div class="symbol" draggable="true" @dragstart="dragStart">β (Beta)</div>
-            <div class="symbol" draggable="true" @dragstart="dragStart">γ (Gamma)</div>
-            <div class="symbol" draggable="true" @dragstart="dragStart">μ (Mu)</div>
-            <div class="symbol" draggable="true" @dragstart="dragStart">σ (Sigma)</div>
-            <div class="symbol" draggable="true" @dragstart="dragStart">Φ (Phi)</div>
           </div>
         </div>
         <div class="media-library">
@@ -36,7 +31,7 @@
               :key="index"
               class="media-item"
               draggable="true"
-              @dragstart="dragStartImage(image.url)"
+              @dragstart="dragStartImage($event, image.url)"
             >
               <img :src="image.url" alt="Uploaded" />
             </div>
@@ -153,8 +148,12 @@ const dragStart = (event) => {
   event.dataTransfer.setData('text/plain', data);
 };
 
-const dragStartImage = (url) => {
-    event.dataTransfer.setData('text/plain', url);
+const dragStartImage = (e, url) => {
+    e.dataTransfer.setData('text', buildImgHtml('https://picsum.photos/200/300'));
+    console.log(e, url);
+    function buildImgHtml(url) {
+        return `<img src="${url}" width="100px" height="100px">`
+    }
 };
 
 
@@ -203,8 +202,8 @@ const triggerFileUpload = () => {
 const handleFileUpload = (event) => {
   const file = event.target.files[0];
   const reader = new FileReader();
-  reader.onload = () => {
-    mediaLibrary.value.push({ url: reader.result });
+  reader.onload = (e) => {
+    mediaLibrary.value.push({ url: e.target.result });
   };
   reader.readAsDataURL(file);
 };
@@ -255,12 +254,12 @@ const handleOptionClick = (optIndex) => {
 .editor-container {
   display: flex;
   gap: 20px;
-  width: 100%;
+  width: 90%;
 }
 
 textarea {
   width: 70%;
-  height: 600px;
+  height: 400px;
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 10px;
@@ -270,7 +269,7 @@ textarea {
 }
 
 .math-symbols {
-  width: 30%;
+  width: 40%;
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 10px;
