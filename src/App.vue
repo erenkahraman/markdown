@@ -1,49 +1,50 @@
 <template>
-  <div class="wrapper">
-    <div class="left-col">
-      <h3>Markdown Question Editor</h3>
-      <div class="editor-container">
-        <textarea
-          v-model="newQuestion"
-          @dragover.prevent
-          @drop="handleDrop"
-          placeholder="Enter your question in Markdown format..."
-        ></textarea>
-        <div class="math-symbols">
-          <h4>Math Symbols</h4>
-          <div class="symbol" draggable="true" @dragstart="dragStart">√ (Square Root)</div>
-          <div class="symbol" draggable="true" @dragstart="dragStart">x² (Exponent)</div>
-          <div class="symbol" draggable="true" @dragstart="dragStart">log (Logarithm)</div>
-          <div class="symbol" draggable="true" @dragstart="dragStart">∫ (Integral)</div>
-          <div class="symbol" draggable="true" @dragstart="dragStart">∞ (Infinity)</div>
-          <div class="symbol" draggable="true" @dragstart="dragStart">∑ (Summation)</div>
-          <div class="symbol" draggable="true" @dragstart="dragStart">π (Pi)</div>
-          <div class="symbol" draggable="true" @dragstart="dragStart">θ (Theta)</div>
-          <div class="symbol" draggable="true" @dragstart="dragStart">Δ (Delta)</div>
-          <div class="symbol" draggable="true" @dragstart="dragStart">α (Alpha)</div>
-          <div class="symbol" draggable="true" @dragstart="dragStart">β (Beta)</div>
-          <div class="symbol" draggable="true" @dragstart="dragStart">γ (Gamma)</div>
-          <div class="symbol" draggable="true" @dragstart="dragStart">μ (Mu)</div>
-          <div class="symbol" draggable="true" @dragstart="dragStart">σ (Sigma)</div>
-          <div class="symbol" draggable="true" @dragstart="dragStart">Φ (Phi)</div>
+    <div class="wrapper">
+      <div class="left-col">
+        <h3>Markdown Question Editor</h3>
+        <div class="editor-container">
+          <textarea
+            v-model="newQuestion"
+            @dragover.prevent
+            @drop="handleDrop"
+            placeholder="Enter your question in Markdown format..."
+          ></textarea>
+          <div class="math-symbols">
+            <h4>Math Symbols</h4>
+            <div class="symbol" draggable="true" @dragstart="dragStart">√ (Square Root)</div>
+            <div class="symbol" draggable="true" @dragstart="dragStart">x² (Exponent)</div>
+            <div class="symbol" draggable="true" @dragstart="dragStart">log (Logarithm)</div>
+            <div class="symbol" draggable="true" @dragstart="dragStart">∫ (Integral)</div>
+            <div class="symbol" draggable="true" @dragstart="dragStart">∞ (Infinity)</div>
+            <div class="symbol" draggable="true" @dragstart="dragStart">∑ (Summation)</div>
+            <div class="symbol" draggable="true" @dragstart="dragStart">π (Pi)</div>
+            <div class="symbol" draggable="true" @dragstart="dragStart">θ (Theta)</div>
+            <div class="symbol" draggable="true" @dragstart="dragStart">Δ (Delta)</div>
+            <div class="symbol" draggable="true" @dragstart="dragStart">α (Alpha)</div>
+            <div class="symbol" draggable="true" @dragstart="dragStart">β (Beta)</div>
+            <div class="symbol" draggable="true" @dragstart="dragStart">γ (Gamma)</div>
+            <div class="symbol" draggable="true" @dragstart="dragStart">μ (Mu)</div>
+            <div class="symbol" draggable="true" @dragstart="dragStart">σ (Sigma)</div>
+            <div class="symbol" draggable="true" @dragstart="dragStart">Φ (Phi)</div>
+          </div>
         </div>
-      </div>
-      <div class="media-library">
+        <div class="media-library">
           <h4>Media Library</h4>
           <div class="media-row">
-              <div
+            <div
               v-for="(image, index) in mediaLibrary"
               :key="index"
               class="media-item"
               draggable="true"
               @dragstart="dragStartImage(image.url)"
-              >
+            >
               <img :src="image.url" alt="Uploaded" />
             </div>
             <div class="media-item add-item" @click="triggerFileUpload">
-                <span>+</span>
-                <input type="file" ref="fileInput" @change="handleFileUpload" style="display: none;" />
+              <span>+</span>
+              <input type="file" ref="fileInput" @change="handleFileUpload" style="display: none;" />
             </div>
+          </div>
         </div>
         <div v-if="selectedType === 'multiple'">
           <h4>Multiple Choice Options</h4>
@@ -58,62 +59,31 @@
           </div>
           <button @click="addMultipleChoiceOption">Add Option</button>
         </div>
-      </div>
-      <div class="button-group">
+        <div v-if="selectedType === 'fill-in'">
+          <h4>Enter the correct answer:</h4>
+          <input v-model="correctFillInAnswer" placeholder="Enter the correct answer..." />
+        </div>
+        <div class="button-group">
           <select v-model="selectedType" @change="chooseQuestionType">
             <option disabled value="">Choose question type</option>
             <option value="multiple">Multiple Choice</option>
             <option value="fill-in">Fill in the Blank</option>
-        </select>
-        <button @click="addQuestion">Add Question</button>
-        <button @click="showPreview">Preview</button>
-        <button @click="showGuidance = true">Markdown Guidance</button>
-      </div>
-    </div>
-    <div class="right-col">
-      <h3>Preview</h3>
-      <div v-for="(question, index) in questions" :key="index">
-        <div v-html="DOMPurify.sanitize(marked.parse(`${index + 1}. ${question.text}`))" class="preview"></div>
-        <div v-if="question.type === 'multiple'">
-          <h4>What's the correct answer?</h4>
-          <div v-for="(option, optIndex) in question.options" :key="optIndex">
-            <input 
-              type="radio" 
-              :name="'previewOption' + index" 
-              :value="option" 
-              @click="checkAnswer(index, option)" 
-              v-model="questions[index].selectedOption"
-            />
-            <label>{{ String.fromCharCode(65 + optIndex) }}. {{ option }}</label>
-          </div>
-        </div>
-        <div v-if="question.type === 'fill-in'">
-          <h4>Fill in the Blank Answer:</h4>
-          <input v-model="question.answer" placeholder="Enter your answer here..." />
+          </select>
+          <button @click="addQuestion">Add Question</button>
+          <button @click="showPreview">Preview</button>
+          <button @click="showGuidance = true">Markdown Guidance</button>
         </div>
       </div>
-    </div>
-    <div v-if="showGuidance" class="modal" @click.self="showGuidance = false">
-      <div class="modal-content">
-        <span class="close" @click="showGuidance = false">&times;</span>
-        <h3>Markdown Guidance</h3>
-        <p>You can find detailed Markdown syntax guide here: <a href="https://www.markdownguide.org/basic-syntax/" target="_blank">Markdown Guide</a></p>
-      </div>
-    </div>
-    <div v-if="showPreviewModal" class="modal" @click.self="showPreviewModal = false">
-      <div class="modal-content">
-        <span class="close" @click="showPreviewModal = false">&times;</span>
+      <div class="right-col">
         <h3>Preview</h3>
         <div v-for="(question, index) in questions" :key="index">
           <div v-html="DOMPurify.sanitize(marked.parse(`${index + 1}. ${question.text}`))" class="preview"></div>
           <div v-if="question.type === 'multiple'">
-            <h4>What's the correct answer?</h4>
             <div v-for="(option, optIndex) in question.options" :key="optIndex">
               <input 
                 type="radio" 
                 :name="'previewOption' + index" 
                 :value="option" 
-                @click="checkAnswer(index, option)" 
                 v-model="questions[index].selectedOption"
               />
               <label>{{ String.fromCharCode(65 + optIndex) }}. {{ option }}</label>
@@ -121,13 +91,43 @@
           </div>
           <div v-if="question.type === 'fill-in'">
             <h4>Fill in the Blank Answer:</h4>
-            <input v-model="question.answer" placeholder="Enter your answer here..." />
+            <input v-model="questions[index].answer" placeholder="Enter your answer here..." />
+          </div>
+        </div>
+      </div>
+      <div v-if="showGuidance" class="modal" @click.self="showGuidance = false">
+        <div class="modal-content">
+          <span class="close" @click="showGuidance = false">&times;</span>
+          <h3>Markdown Guidance</h3>
+          <p>You can find detailed Markdown syntax guide here: <a href="https://www.markdownguide.org/basic-syntax/" target="_blank">Markdown Guide</a></p>
+        </div>
+      </div>
+      <div v-if="showPreviewModal" class="modal" @click.self="showPreviewModal = false">
+        <div class="modal-content">
+          <span class="close" @click="showPreviewModal = false">&times;</span>
+          <h3>Preview</h3>
+          <div v-for="(question, index) in questions" :key="index">
+            <div v-html="DOMPurify.sanitize(marked.parse(`${index + 1}. ${question.text}`))" class="preview"></div>
+            <div v-if="question.type === 'multiple'">
+              <div v-for="(option, optIndex) in question.options" :key="optIndex">
+                <input 
+                  type="radio" 
+                  :name="'previewOption' + index" 
+                  :value="option" 
+                  v-model="questions[index].selectedOption"
+                />
+                <label>{{ String.fromCharCode(65 + optIndex) }}. {{ option }}</label>
+              </div>
+            </div>
+            <div v-if="question.type === 'fill-in'">
+              <h4>Fill in the Blank Answer:</h4>
+              <input v-model="question.answer" placeholder="Enter your answer here..." />
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</template>
+  </template>
 
 <script setup>
 import { ref, getCurrentInstance } from 'vue';
@@ -142,19 +142,21 @@ const newQuestionOptions = ref(['']);
 const questions = ref([]);
 const showGuidance = ref(false);
 const showPreviewModal = ref(false);
+const correctFillInAnswer = ref('');
 
 const selectedType = ref('');
 const mediaLibrary = ref([]);
 
 const dragStart = (event) => {
-  event.dataTransfer.setData('text/plain', event.target.textContent);
+  const data = event.target.textContent;
+  console.log('Dragging data:', data);
+  event.dataTransfer.setData('text/plain', data);
 };
 
 const dragStartImage = (url) => {
-  return (event) => {
-    event.dataTransfer.setData('text/plain', `![Image](${url})`);
-  };
+    event.dataTransfer.setData('text/plain', url);
 };
+
 
 const addQuestion = () => {
   if (newQuestion.value.trim() !== "") {
@@ -162,12 +164,13 @@ const addQuestion = () => {
       text: newQuestion.value,
       type: selectedType.value,
       options: [...newQuestionOptions.value],
-      correctOption: '',
+      correctOption: selectedType.value === 'multiple' ? '' : correctFillInAnswer.value,
       answer: '',
       selectedOption: ''
     });
     newQuestion.value = '';
     newQuestionOptions.value = [''];
+    correctFillInAnswer.value = '';
   }
 };
 
@@ -209,26 +212,13 @@ const handleFileUpload = (event) => {
 const handleDrop = (event) => {
   event.preventDefault();
   const data = event.dataTransfer.getData('text/plain');
-  if (data) {
-    const markdownImage = `\n\n${data}\n\n`;
-    const textarea = event.target;
-    const startPos = textarea.selectionStart;
-    const endPos = textarea.selectionEnd;
-    const beforeValue = newQuestion.value.substring(0, startPos);
-    const afterValue = newQuestion.value.substring(endPos, newQuestion.value.length);
-    newQuestion.value = beforeValue + markdownImage + afterValue;
-  }
+  newQuestion.value += data;
 };
 
 const handleOptionClick = (optIndex) => {
-  questions.value[questions.value.length - 1].correctOption = newQuestionOptions.value[optIndex];
-};
-
-const checkAnswer = (questionIndex, selectedOption) => {
-  if (questions.value[questionIndex].correctOption === selectedOption) {
-    alert('Correct!');
-  } else {
-    alert('Incorrect!');
+  const lastQuestionIndex = questions.value.length - 1;
+  if (lastQuestionIndex >= 0 && questions.value[lastQuestionIndex]) {
+    questions.value[lastQuestionIndex].correctOption = newQuestionOptions.value[optIndex];
   }
 };
 
