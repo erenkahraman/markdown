@@ -152,7 +152,7 @@ const dragStartImage = (e, url) => {
     e.dataTransfer.setData('text', buildImgHtml('https://picsum.photos/200/300'));
     console.log(e, url);
     function buildImgHtml(url) {
-        return `<img src="${url}" width="100px" height="100px">`
+        return `<img src="${url}" width="300px" height="300px">`
     }
 };
 

@@ -8,7 +8,7 @@ Which of the following is the solution to the quadratic equation $begin:math:tex
 3. $begin:math:text$ x = 2 $end:math:text$ and $begin:math:text$ x = 3 $end:math:text$
 4. $begin:math:text$ x = 3 $end:math:text$ and $begin:math:text$ x = 2 $end:math:text$
 
-<img src="https://picsum.photos/200/300" width="100px" height="100px">
+<img src="https://picsum.photos/200/300" width="300px" height="300px">
 `;
 
 export default defaultMultiple;
