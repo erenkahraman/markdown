@@ -64,7 +64,7 @@
             <option value="multiple">Multiple Choice</option>
             <option value="fill-in">Fill in the Blank</option>
           </select>
-          <button @click="addQuestion">Add Question</button>
+          <button @click="addQuestion">Create Item</button>
           <button @click="showPreview">Preview</button>
           <button @click="showGuidance = true">Markdown Guidance</button>
         </div>
